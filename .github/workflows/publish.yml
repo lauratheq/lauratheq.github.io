@@ -38,4 +38,4 @@ jobs:
 
     - name: Test LSTE
       run: |
-        ./lste/lste --path=./
+        ./lste/lste.py --path=./
