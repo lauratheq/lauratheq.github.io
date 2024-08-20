@@ -13,11 +13,33 @@ jobs:
     - name: Checkout the code
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        node-version: '16'
+        python-version: '3.x'
 
-    - name: Install LSTE
+    - name: Install Python dependencies
       run: |
-        npm install -g https://github.com/lauratheq/lste
+        python -m pip install --upgrade pip
+        pip install markdown
+
+    - name: Clone LSTE repository
+      run: |
+        git clone https://github.com/lauratheq/lste.git
+        mkdir -p ~/bin
+        ln -s $GITHUB_WORKSPACE/lste/lste.py ~/bin/lste
+        echo "export PATH=$PATH:~/bin" >> ~/.bashrc
+        source ~/.bashrc
+
+    - name: Create .lsterc file
+      run: |
+        echo "[plugins]" > ~/.lsterc
+        echo "active-menu = lauratheq/active-menu.lste" >> ~/.lsterc
+        echo "meta = lauratheq/meta.lste" >> ~/.lsterc
+        echo "articles = lauratheq/articles.lste" >> ~/.lsterc
+        echo "excerpts-markdown = lauratheq/excerpts-markdown.lste" >> ~/.lsterc
+        echo "rss = lauratheq/rss.lste" >> ~/.lsterc
+
+    - name: Test LSTE
+      run: |
+        lste .
