@@ -40,3 +40,11 @@ jobs:
       run: |
         ./lste/lste.py --path=./
         ./lste/lste.py --path=./
+
+    - name: Upload to SFTP server
+      run: |
+        lftp -e "
+          set ftp:ssl-allow no;
+          mirror -R ./dist /test;
+          bye
+        " -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
