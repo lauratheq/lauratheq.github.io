@@ -36,7 +36,7 @@ jobs:
         echo "excerpts-markdown = lauratheq/excerpts-markdown.lste" >> ~/.lsterc
         echo "rss = lauratheq/rss.lste" >> ~/.lsterc
 
-    - name: Test LSTE
+    - name: Compile Website
       run: |
         ./lste/lste.py --path=./
         ./lste/lste.py --path=./
@@ -45,6 +45,6 @@ jobs:
       run: |
         lftp -e "
           set ftp:ssl-allow no;
-          mirror -R --no-delete --exclude-glob .htaccess ./dist /test;
+          mirror -R --exclude-glob .htaccess ./dist /test;
           bye
         " -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
