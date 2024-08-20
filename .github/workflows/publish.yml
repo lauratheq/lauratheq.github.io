@@ -26,10 +26,6 @@ jobs:
     - name: Clone LSTE repository
       run: |
         git clone https://github.com/lauratheq/lste.git
-        mkdir -p ~/bin
-        ln -s $GITHUB_WORKSPACE/lste/lste.py ~/bin/lste
-        echo "export PATH=$PATH:~/bin" >> ~/.bashrc
-        source ~/.bashrc
 
     - name: Create .lsterc file
       run: |
@@ -42,4 +38,4 @@ jobs:
 
     - name: Test LSTE
       run: |
-        lste .
+        ./lste/lste --path=./
