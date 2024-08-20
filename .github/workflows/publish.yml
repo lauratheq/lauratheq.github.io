@@ -50,6 +50,7 @@ jobs:
       run: |
         lftp -e "
           set ftp:ssl-allow no;
+          set sftp:connect-program 'ssh -o StrictHostKeyChecking=no';
           mirror -R --exclude-glob .htaccess ./dist /test;
           bye
         " -u ${{ secrets.SFTP_USER }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PORT }}
